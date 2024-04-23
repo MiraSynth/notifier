@@ -19,7 +19,7 @@ type discordMessage struct {
 type discordNotifyService struct {
 }
 
-func NewDiscordNotifyService() common.NotifyService {
+func NewNotifyService() common.NotifyService {
 	var notifyService common.NotifyService = &discordNotifyService{}
 	return notifyService
 }
