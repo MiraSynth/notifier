@@ -18,6 +18,7 @@ func init() {
 	}
 
 	rootCmd.AddCommand(NewPushCmd())
+	rootCmd.AddCommand(NewServerhCmd())
 }
 
 func Execute() {
