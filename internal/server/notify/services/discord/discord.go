@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"mirasynth.stream/notifier/internal/config"
 	"mirasynth.stream/notifier/internal/server/notify/services/common"
 )
 
@@ -24,7 +25,7 @@ func NewDiscordNotifyService() common.NotifyService {
 }
 
 func (p *discordNotifyService) Notify(notify *common.Notify) (string, error) {
-	posturl := ""
+	posturl := config.GetDiscordWebhook()
 
 	dm := discordMessage{
 		Username: notify.Context,
