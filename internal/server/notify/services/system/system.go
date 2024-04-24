@@ -8,10 +8,14 @@ import (
 const SERVICE_NAME = "system"
 
 type systemNotifyService struct {
+	pushService *push.Push
 }
 
 func NewNotifyService() common.NotifyService {
-	var notifyService common.NotifyService = &systemNotifyService{}
+	pushService := push.NewPushService()
+	var notifyService common.NotifyService = &systemNotifyService{
+		pushService: &pushService,
+	}
 	return notifyService
 }
 
@@ -22,8 +26,8 @@ func (p *systemNotifyService) Notify(notify *common.Notify) (string, error) {
 		Text:    notify.Content,
 	}
 
-	x := push.NewPushService()
-	_, err := x.Push(&pushData)
+	pushService := *p.pushService
+	err := pushService.Push(&pushData)
 
 	return "", err
 }

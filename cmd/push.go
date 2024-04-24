@@ -19,14 +19,18 @@ func NewPushCmd() *cobra.Command {
 			pushData.Text = args[1]
 
 			x := push.NewPushService()
-			_, err := x.Push(&pushData)
 
-			return err
+			if pushData.Critical {
+				return x.PushCritical(&pushData)
+			}
+
+			return x.Push(&pushData)
 		},
 	}
 
 	pushCmd.Flags().StringVarP(&pushData.Context, "context", "c", "", atlas.PUSH_COMMAND_FLAG_CONTEXT_DESC)
 	pushCmd.Flags().StringVarP(&pushData.Icon, "icon", "i", "", atlas.PUSH_COMMAND_FLAG_ICON_DESC)
+	pushCmd.Flags().BoolVarP(&pushData.Critical, "critical", "u", false, atlas.PUSH_COMMAND_FLAG_CRITICAL_DESC)
 
 	return pushCmd
 }
