@@ -11,6 +11,9 @@ RUN chmod +x ./build/linux/notifier
 # App and server section of the docker file
 FROM ubuntu:latest as serve
 
+RUN apt-get update
+RUN apt-get install -y ca-certificates
+
 ARG NOTIFIER_DISCORDWEBHOOK=https://discord.com/api/webhooks/
 ARG USERNAME=nonroot
 ARG USER_UID=1000
