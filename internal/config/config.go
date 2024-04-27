@@ -1,35 +1,23 @@
 package config
 
 import (
-	"bytes"
-	"encoding/json"
+	"fmt"
+	"strings"
 
 	"github.com/spf13/viper"
 )
 
-type config struct {
-	DiscordWebhook string `json:"discordWebhook"`
-}
+var venv *viper.Viper
 
 func SetupConfig() {
-	defaultConfig := &config{
-		DiscordWebhook: "",
-	}
-
-	defaultConfigBytes, err := json.Marshal(&defaultConfig)
-	if err != nil {
-		panic(err)
-	}
-
-	viper.ReadConfig(bytes.NewReader(defaultConfigBytes))
-
-	viper.SetConfigType("json")
-	viper.SetEnvPrefix("notifier")
-	viper.AutomaticEnv()
-	viper.ReadInConfig()
+	venv = viper.New()
+	venv.SetEnvPrefix("notifier")
+	venv.AutomaticEnv()
 }
 
-// NOTIFIER_DISCORDWEBHOOK
-func GetDiscordWebhook() string {
-	return viper.GetString("discordWebhook")
+// NOTIFIER_DISCORD_[CUSTOM_NAME]
+func GetDiscordWebhook(name string) string {
+	name = strings.ReplaceAll(name, " ", "")
+	name = strings.ToLower(name)
+	return venv.GetString(fmt.Sprintf("discord_%s", name))
 }

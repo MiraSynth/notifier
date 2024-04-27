@@ -6,5 +6,5 @@ type Notify struct {
 }
 
 type NotifyService interface {
-	Notify(notify *Notify) (string, error)
+	Notify(notify *Notify) error
 }

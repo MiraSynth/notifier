@@ -24,8 +24,8 @@ func NewNotifyService() common.NotifyService {
 	return notifyService
 }
 
-func (p *discordNotifyService) Notify(notify *common.Notify) (string, error) {
-	posturl := config.GetDiscordWebhook()
+func (p *discordNotifyService) Notify(notify *common.Notify) error {
+	posturl := config.GetDiscordWebhook(notify.Context)
 
 	dm := discordMessage{
 		Username: notify.Context,
@@ -34,12 +34,12 @@ func (p *discordNotifyService) Notify(notify *common.Notify) (string, error) {
 
 	dmRaw, err := json.Marshal(dm)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	request, err := http.NewRequest("POST", posturl, bytes.NewBuffer(dmRaw))
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	request.Header.Add("Content-Type", "application/json")
@@ -47,10 +47,10 @@ func (p *discordNotifyService) Notify(notify *common.Notify) (string, error) {
 	client := &http.Client{}
 	res, err := client.Do(request)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	defer res.Body.Close()
 
-	return "", nil
+	return nil
 }

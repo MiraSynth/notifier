@@ -19,7 +19,7 @@ func NewNotifyService() common.NotifyService {
 	return notifyService
 }
 
-func (p *systemNotifyService) Notify(notify *common.Notify) (string, error) {
+func (p *systemNotifyService) Notify(notify *common.Notify) error {
 	pushData := push.PushData{
 		Context: notify.Context,
 		Title:   "From Webhook",
@@ -29,5 +29,5 @@ func (p *systemNotifyService) Notify(notify *common.Notify) (string, error) {
 	pushService := *p.pushService
 	err := pushService.Push(&pushData)
 
-	return "", err
+	return err
 }
