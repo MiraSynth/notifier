@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"github.com/spf13/cobra"
+	"mirasynth.stream/notifier/cmd/push/discord"
 	"mirasynth.stream/notifier/internal/atlas"
 	"mirasynth.stream/notifier/internal/push"
 )
@@ -31,6 +32,8 @@ func NewPushCmd() *cobra.Command {
 	pushCmd.Flags().StringVarP(&pushData.Context, "context", "c", "", atlas.PUSH_COMMAND_FLAG_CONTEXT_DESC)
 	pushCmd.Flags().StringVarP(&pushData.Icon, "icon", "i", "", atlas.PUSH_COMMAND_FLAG_ICON_DESC)
 	pushCmd.Flags().BoolVarP(&pushData.Critical, "critical", "u", false, atlas.PUSH_COMMAND_FLAG_CRITICAL_DESC)
+
+	pushCmd.AddCommand(discord.NewPushDiscordCmd())
 
 	return pushCmd
 }
