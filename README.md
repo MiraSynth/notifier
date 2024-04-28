@@ -1,2 +1,4 @@
-# notifier
-A command-line application that helps push system notifications
+# MiraSynth's Notifier
+Acommand-line application that helps push system notifications
+
+## How to Contribute
