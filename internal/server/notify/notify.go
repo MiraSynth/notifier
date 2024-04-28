@@ -2,35 +2,32 @@ package notify
 
 import (
 	"encoding/json"
+	"io"
 
-	"github.com/beego/beego/v2/server/web"
+	"github.com/gin-gonic/gin"
 	"mirasynth.stream/notifier/internal/server/notify/services"
 	"mirasynth.stream/notifier/internal/server/notify/services/common"
 )
 
-type NotifyController struct {
-	web.Controller
-}
-
-func (ctrl *NotifyController) Post() {
+func post(c *gin.Context) {
 	input := common.Notify{}
 
-	err := json.Unmarshal(ctrl.Ctx.Input.RequestBody, &input)
+	jsonData, err := io.ReadAll(c.Request.Body)
 	if err != nil {
-		ctrl.Data["json"] = err.Error()
+		c.JSON(500, err)
+		return
+	}
+
+	err = json.Unmarshal(jsonData, &input)
+	if err != nil {
+		c.JSON(500, err)
+		return
 	}
 
 	services.NotifyServices(&input)
-
-	ctrl.Data["json"] = input
-	ctrl.ServeJSON()
 }
 
-func RegisterController(rootpath string) *NotifyController {
+func RegisterController(ge *gin.Engine, rootpath string) {
 	services.StartServices()
-
-	ctrl := &NotifyController{}
-	web.Router(rootpath, ctrl)
-
-	return ctrl
+	ge.POST(rootpath, post)
 }

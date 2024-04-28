@@ -1,21 +1,11 @@
 package ready
 
 import (
-	"github.com/beego/beego/v2/server/web"
+	"github.com/gin-gonic/gin"
 )
 
-type HealthReadyController struct {
-	web.Controller
-}
-
-func (ctrl *HealthReadyController) Get() {
-	ctrl.Ctx.WriteString("ready")
-	ctrl.Ctx.ResponseWriter.WriteHeader(200)
-}
-
-func RegisterController(rootpath string) *HealthReadyController {
-	ctrl := &HealthReadyController{}
-	web.Router(rootpath, ctrl)
-
-	return ctrl
+func RegisterController(r *gin.Engine, rootpath string) {
+	r.GET(rootpath, func(c *gin.Context) {
+		c.String(200, "ready")
+	})
 }

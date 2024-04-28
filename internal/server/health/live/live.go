@@ -1,21 +1,11 @@
 package live
 
 import (
-	"github.com/beego/beego/v2/server/web"
+	"github.com/gin-gonic/gin"
 )
 
-type HealthLiveController struct {
-	web.Controller
-}
-
-func (ctrl *HealthLiveController) Get() {
-	ctrl.Ctx.WriteString("live")
-	ctrl.Ctx.ResponseWriter.WriteHeader(200)
-}
-
-func RegisterController(rootpath string) *HealthLiveController {
-	ctrl := &HealthLiveController{}
-	web.Router(rootpath, ctrl)
-
-	return ctrl
+func RegisterController(r *gin.Engine, rootpath string) {
+	r.GET(rootpath, func(c *gin.Context) {
+		c.String(200, "live")
+	})
 }

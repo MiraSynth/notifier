@@ -1,16 +1,16 @@
 package server
 
 import (
-	"github.com/beego/beego/v2/server/web"
+	"github.com/gin-gonic/gin"
 	"mirasynth.stream/notifier/internal/server/health"
 	"mirasynth.stream/notifier/internal/server/notify"
 )
 
 func StartServer() {
-	web.BConfig.CopyRequestBody = true
+	ge := gin.Default()
 
-	health.RegisterController()
-	notify.RegisterController("/api/v1/notify")
+	health.RegisterController(ge)
+	notify.RegisterController(ge, "/api/v1/notify")
 
-	web.Run(":3038")
+	ge.Run(":3038")
 }
