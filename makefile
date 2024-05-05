@@ -1,4 +1,4 @@
-build-all: build-windows build-linux build-darwin
+build: build-windows build-linux build-darwin
 
 build-windows:
 	GOOS=windows GOARCH=amd64 go build -ldflags "-s -w" -o ./build/windows/notifier.exe
