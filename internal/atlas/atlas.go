@@ -1,5 +1,10 @@
 package atlas
 
+const CONFIG_NAMESPACE = "mirasynth"
+const CONFIG_PREFIX = "notifier"
+const CONFIG_TYPE = "yaml"
+const CONFIG_FILENAME = "config"
+
 const NOTIFIER_SHORT_DESC = "A collection of commands that pops up notifications on your system"
 const NOTIFIER_LONG_DESC = "A collection of commands that pops up notifications on your system"
 
