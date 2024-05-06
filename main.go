@@ -13,6 +13,13 @@ func main() {
 	log.SetOutput(os.Stdout)
 	log.SetLevel(log.DebugLevel)
 
-	config.SetupConfig()
+	err := config.SetupConfig()
+
+	if err != nil {
+		log.Error(err)
+		os.Exit(1)
+		return
+	}
+
 	cmd.Execute()
 }

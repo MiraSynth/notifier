@@ -7,32 +7,36 @@ import (
 	"path"
 	"strings"
 
+	log "github.com/sirupsen/logrus"
+
 	"github.com/spf13/viper"
 	"mirasynth.stream/notifier/internal/atlas"
 )
 
 var venv *viper.Viper
 
-func SetupConfig() {
+func SetupConfig() error {
 	venv = viper.New()
 	venv.SetConfigType(atlas.CONFIG_TYPE)
 	venv.SetEnvPrefix(atlas.CONFIG_PREFIX)
-	venv.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+	venv.SetEnvKeyReplacer(strings.NewReplacer(".", "_", " ", ""))
 	venv.AutomaticEnv()
 
 	configFilePath, err := verifyConfigFile()
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	venv.SetConfigFile(configFilePath)
 
 	err = venv.ReadInConfig()
 	if err != nil {
-		panic(err)
+		return err
 	}
 
-	fmt.Println("usign config", venv.ConfigFileUsed())
+	log.Debug("usign config", venv.ConfigFileUsed())
+
+	return nil
 }
 
 func verifyConfigFile() (string, error) {
@@ -56,7 +60,7 @@ func verifyConfigFile() (string, error) {
 	bytes := []byte{}
 	err = os.WriteFile(configFilePath, bytes, 0755)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
 
 	return configFilePath, nil
@@ -64,7 +68,5 @@ func verifyConfigFile() (string, error) {
 
 // NOTIFIER_DISCORD_[CUSTOM_NAME]
 func GetDiscordWebhook(name string) string {
-	name = strings.ReplaceAll(name, " ", "")
-	name = strings.ToLower(name)
-	return venv.GetString(fmt.Sprintf("discord_%s", name))
+	return venv.GetString(fmt.Sprintf("discord.%s", name))
 }
