@@ -7,10 +7,12 @@ import (
 )
 
 func StartServer() {
-	ge := gin.Default()
+	ginEngine := gin.Default()
 
-	health.RegisterController(ge)
-	notify.RegisterController(ge, "/api/v1/notify")
+	routerGroup := ginEngine.Group("/api/v1")
 
-	ge.Run(":3038")
+	health.RegisterController(routerGroup, "/health")
+	notify.RegisterController(routerGroup, "/notify")
+
+	ginEngine.Run(":3038")
 }

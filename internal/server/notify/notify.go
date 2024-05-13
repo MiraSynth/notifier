@@ -27,7 +27,7 @@ func post(c *gin.Context) {
 	services.NotifyServices(&input)
 }
 
-func RegisterController(ge *gin.Engine, rootpath string) {
+func RegisterController(ge *gin.RouterGroup, rootpath string) {
 	services.StartServices()
 	ge.POST(rootpath, post)
 }
